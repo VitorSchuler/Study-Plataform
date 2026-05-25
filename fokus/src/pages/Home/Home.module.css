@@ -1,0 +1,167 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* --- Bento Grid --- */
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.card {
+  background-color: var(--bg-surface); /* Preto Tech */
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  /* Sombra mais difusa e escura */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); 
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Ícones dos cabeçalhos dos cards agora são neon */
+.cardHeader svg {
+  color: var(--brand-primary);
+  filter: drop-shadow(0 0 3px rgba(167, 139, 255, 0.4));
+}
+
+.cardHeader h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* --- Alinhamento das áreas do Bento --- */
+.statsCard {
+  grid-column: span 2;
+  min-height: 260px;
+}
+
+.insightsCard {
+  grid-column: span 2;
+}
+
+.todoCard {
+  grid-column: span 1;
+  grid-row: span 2;
+  min-height: 480px;
+}
+
+/* --- Estilização interna: Horas Estudadas (Barras Neon) --- */
+.statsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.subjectRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subjectInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.subjectName {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.subjectHours {
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.progressBarBase {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.05); /* Fundo da barra bem escuro */
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--brand-primary); /* PREENCHIMENTO NEON */
+  border-radius: 3px;
+  /* A barra brilha */
+  box-shadow: 0 0 10px rgba(167, 139, 255, 0.5); 
+}
+
+/* --- Estilização interna: Insights Gerais --- */
+.insightsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.insightMiniCard {
+  background-color: rgba(0, 0, 0, 0.2); /* Fundo interno mais escuro */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.insightIcon {
+  color: var(--brand-primary); /* Ícones Neon */
+  filter: drop-shadow(0 0 3px rgba(167, 139, 255, 0.4));
+  margin-top: 0.15rem;
+}
+
+.insightData {
+  display: flex;
+  flex-direction: column;
+}
+
+.insightValue {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.insightLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}

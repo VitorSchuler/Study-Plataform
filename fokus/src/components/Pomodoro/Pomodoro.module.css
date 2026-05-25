@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.timeDisplay {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  /* Tabular-nums alinha os números para não tremerem durante a contagem */
+  font-variant-numeric: tabular-nums; 
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mainBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 44px;
+  padding: 0 1.5rem;
+  background-color: var(--brand-primary); /* Nosso preto profundo */
+  color: var(--brand-text);
+  border: none;
+  border-radius: 22px; /* Formato de pílula arredondado */
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mainBtn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.mainBtn:active {
+  transform: scale(0.98);
+}
+
+/* Estado de Pausar: inverte o botão para ficar oco */
+.running {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.running:hover {
+  background-color: var(--bg-base);
+  opacity: 1;
+}
+
+.resetBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resetBtn:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  background-color: var(--bg-base);
+}
