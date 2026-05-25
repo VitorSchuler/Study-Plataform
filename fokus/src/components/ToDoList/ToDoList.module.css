@@ -1,0 +1,146 @@
+.todoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+}
+
+.form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input {
+  flex: 1;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-base); /* Inverte o tom para dar profundidade dentro do card */
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 0 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--text-primary);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.addBtn {
+  width: 40px;
+  height: 40px;
+  background-color: var(--brand-primary);
+  color: var(--brand-text);
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addBtn:hover {
+  background-color: var(--brand-hover);
+}
+
+/* --- Container da Lista --- */
+.listContainer {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 180px;
+}
+
+.emptyState {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 2rem;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.taskText {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  word-break: break-word;
+  transition: color 0.2s;
+}
+
+/* --- Estados Interativos (Check/Delete) --- */
+.checkBtn, .deleteBtn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.squareIcon {
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.checkBtn:hover .squareIcon {
+  color: var(--text-primary);
+}
+
+.checkIcon {
+  color: var(--text-secondary);
+}
+
+.deleteBtn {
+  color: var(--text-muted);
+  opacity: 0; /* Esconde o botão de lixeira por padrão */
+  transition: all 0.2s;
+}
+
+/* Mostra a lixeira de forma elegante apenas ao passar o mouse na linha da tarefa */
+.item:hover .deleteBtn {
+  opacity: 1;
+  color: var(--text-secondary);
+}
+
+.deleteBtn:hover {
+  color: #ef4444 !important; /* Vermelho padrão para ações destrutivas */
+}
+
+/* Customização para quando a tarefa está concluída */
+.completed .taskText {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.completed .item {
+  opacity: 0.7;
+}
