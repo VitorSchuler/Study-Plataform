@@ -1,0 +1,338 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* BOTÃO DE ADICIONAR NEON */
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 42px;
+  padding: 0 1.25rem;
+  background-color: var(--brand-primary);
+  color: var(--brand-text); /* Texto PRETO */
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--neon-glow);
+}
+
+.addBtn:hover {
+  background-color: var(--brand-hover);
+  box-shadow: var(--neon-glow-hover);
+}
+
+/* --- Grid de Matérias Modo Noturno --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: var(--bg-surface); /* Preto Tech */
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.subjectIcon {
+  color: var(--brand-primary); /* Ícone brilha */
+  filter: drop-shadow(0 0 3px rgba(167, 139, 255, 0.4));
+}
+
+.subjectName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.professorInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.methodPreview {
+  background-color: rgba(0, 0, 0, 0.2); /* Fundo interno mais escuro */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.methodHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.sparkleIcon {
+  color: var(--brand-primary); /* Brilho Tech */
+}
+
+.methodPreview p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botão de Acessar Oco com Hover Neon */
+.enterBtn {
+  width: 100%;
+  height: 38px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.enterBtn:hover {
+  background-color: rgba(167, 139, 255, 0.05);
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 10px rgba(167, 139, 255, 0.2);
+}
+
+/* --- Modal Overlay & Content Noturno --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Backdrop mais escuro */
+  backdrop-filter: blur(5px); /* Mais blur no escuro fica lindo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: var(--bg-surface); /* Preto Tech */
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 540px;
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: scaleUp 0.2s ease-out;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.modalHeader h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: var(--brand-primary);
+}
+
+/* --- Formulário do Modal "Modo Noturno" --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Inputs Escuros */
+.input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 0 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus, .textarea:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 10px rgba(167, 139, 255, 0.2);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.textarea {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  padding: 1rem;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Caixa do Modus Operandi (Preto Absoluto dentro do Modal Preto Tech) */
+.aiExplanation {
+  background-color: var(--bg-base); /* PRETO ABSOLUTO */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.25rem;
+}
+
+.explanationIcon {
+  color: var(--brand-primary); /* Lilás Neon Brilhando */
+  filter: drop-shadow(0 0 4px rgba(167, 139, 255, 0.6));
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.aiExplanation p {
+  font-size: 0.8rem;
+  color: var(--text-secondary); /* Cinza frio */
+  line-height: 1.5;
+}
+
+.aiExplanation em {
+  color: #fff;
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Ações do Modal Noturno */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.cancelBtn {
+  height: 42px;
+  padding: 0 1.25rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.submitBtn {
+  height: 42px;
+  padding: 0 1.25rem;
+  background-color: var(--brand-primary); /* Neon */
+  color: var(--brand-text); /* Texto PRETO */
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--neon-glow);
+}
+
+.submitBtn:hover {
+  background-color: var(--brand-hover);
+  box-shadow: var(--neon-glow-hover);
+}
