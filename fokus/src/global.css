@@ -1,0 +1,60 @@
+/* =========================================
+   MODO CLARO (Padrão: Estética Cimento)
+========================================= */
+:root {
+  --bg-base: #e4e4e7;
+  --bg-surface: #f4f4f5;
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --border-color: #d4d4d8;
+  
+  --brand-primary: #18181b;
+  --brand-hover: #27272a;
+  --brand-text: #ffffff;
+  
+  --neon-glow: none;
+  --neon-glow-hover: none;
+}
+
+/* =========================================
+   MODO ESCURO (Neon Dark)
+   Ativado quando a tag html recebe data-theme="dark"
+========================================= */
+[data-theme="dark"] {
+  --bg-base: #000000;
+  --bg-surface: #111111;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #3f3f46;
+  --border-color: #27272a;
+  
+  --brand-primary: #A78BFF;
+  --brand-hover: #BB99FF;
+  --brand-text: #000000;
+  
+  /* Mantemos o brilho apenas no modo escuro */
+  --neon-glow: 0 0 10px rgba(167, 139, 255, 0.5), 0 0 20px rgba(167, 139, 255, 0.3);
+  --neon-glow-hover: 0 0 15px rgba(187, 153, 255, 0.6), 0 0 30px rgba(187, 153, 255, 0.4);
+}
+
+/* Reset Global e Tipografia */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Transição suave ao "acender/apagar a luz" */
+body, .sidebar, .card, .modalContent, input, textarea {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body {
+  overflow: hidden;
+}

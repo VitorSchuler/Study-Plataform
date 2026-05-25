@@ -1,0 +1,199 @@
+.sidebar {
+  width: 260px;
+  /* Se por acaso a variável falhar, ele usa o #111111 como garantia */
+  background-color: var(--bg-surface, #111111); 
+  border-right: 1px solid var(--border-color, #27272a);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.collapsed {
+  width: 80px;
+}
+
+/* --- Header & Logo Textual --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  height: 80px;
+  transition: all 0.3s ease;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary); /* <-- A mágica acontece aqui */
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.dot {
+  color: var(--brand-primary, #A78BFF);
+  text-shadow: var(--neon-glow, 0 0 10px rgba(167, 139, 255, 0.5)); 
+}
+
+/* Ajustes no cabeçalho quando recolhido */
+.collapsed .header {
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  height: auto;
+}
+
+.collapsed .logoText {
+  font-size: 1.2rem;
+}
+
+/* --- Botão de Toggle --- */
+.toggleBtn {
+  background: rgba(255, 255, 255, 0.05); /* Fundo sutilmente visível no escuro */
+  border: 1px solid var(--border-color, #27272a);
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary, #a1a1aa);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.toggleBtn:hover {
+  background: rgba(120, 120, 120, 0.1); /* Fundo universal para hover */
+  color: var(--text-primary);           /* Texto dinâmico (Preto/Branco) */
+  border-color: var(--text-primary);    /* Borda dinâmica */
+}
+
+/* --- Navegação --- */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  flex: 1;
+  margin-top: 1rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text-secondary, #a1a1aa);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.navItem:hover {
+  background-color: rgba(120, 120, 120, 0.1); /* Fundo universal para hover */
+  color: var(--text-primary);                 /* Texto dinâmico */
+}
+
+/* ITEM ATIVO: A Mágica do Neon */
+.active {
+  background-color: rgba(167, 139, 255, 0.1); 
+  color: var(--brand-primary, #A78BFF);
+  border: 1px solid rgba(167, 139, 255, 0.2);
+  box-shadow: var(--neon-glow, 0 0 10px rgba(167, 139, 255, 0.5)); 
+}
+
+.active:hover {
+  background-color: rgba(167, 139, 255, 0.15);
+  color: var(--brand-hover, #BB99FF);
+}
+
+.icon {
+  min-width: 20px;
+  flex-shrink: 0;
+}
+
+.collapsed .navItem {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
+/* --- Footer (Perfil do Usuário) --- */
+.footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color, #27272a);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.collapsed .footer {
+  padding: 1.5rem 0;
+  justify-content: center;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid var(--border-color, #27272a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.userName {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+/* Container do botão de tema */
+.themeToggleContainer {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.collapsed .themeToggleContainer {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* O botão de tema compartilha o visual dos links, mas é um botão */
+.themeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.themeBtn:hover {
+  background-color: rgba(120, 120, 120, 0.1);
+  color: var(--text-primary);
+}
