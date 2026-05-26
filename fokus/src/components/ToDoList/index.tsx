@@ -8,7 +8,7 @@ interface Task {
   completed: boolean
 }
 
-export function TodoList() {
+export function ToDoList() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [newTask, setNewTask] = useState('')
 

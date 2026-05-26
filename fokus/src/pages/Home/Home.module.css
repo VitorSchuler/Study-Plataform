@@ -1,21 +1,41 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  height: 100%;
+  gap: 2.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1rem 0;
+  animation: fadeIn 0.3s ease-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+/* --- Header --- */
 .header {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 .title {
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 2.2rem;
+  font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin-bottom: 0.25rem;
 }
 
@@ -24,144 +44,266 @@
   font-size: 0.95rem;
 }
 
-/* --- Bento Grid --- */
-.bentoGrid {
+/* --- Stats Grid --- */
+.statsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  align-items: start;
 }
 
-.card {
-  background-color: var(--bg-surface); /* Preto Tech */
-  border-radius: 16px;
+.statCard {
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  /* Sombra mais difusa e escura */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); 
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.cardHeader {
+  border-radius: 16px;
+  padding: 1.75rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  transition: all 0.2s;
 }
 
-/* Ícones dos cabeçalhos dos cards agora são neon */
-.cardHeader svg {
-  color: var(--brand-primary);
-  filter: drop-shadow(0 0 3px rgba(167, 139, 255, 0.4));
+.statCard:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 4px 20px rgba(167, 139, 255, 0.08);
 }
 
-.cardHeader h2 {
-  font-size: 1.1rem;
+.statIconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.8rem;
   font-weight: 600;
-  margin: 0;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-/* --- Alinhamento das áreas do Bento --- */
-.statsCard {
-  grid-column: span 2;
-  min-height: 260px;
+.statValue {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
 }
 
-.insightsCard {
-  grid-column: span 2;
+/* --- Content Layout --- */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.todoCard {
-  grid-column: span 1;
-  grid-row: span 2;
-  min-height: 480px;
-}
-
-/* --- Estilização interna: Horas Estudadas (Barras Neon) --- */
-.statsContent {
+.dashboardSection {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.subjectRow {
+.sectionHeader {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.subjectInfo {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
+.sectionIcon {
+  color: var(--brand-primary);
 }
 
-.subjectName {
-  font-weight: 500;
+.sectionTitle h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
-.subjectHours {
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
-}
-
-.progressBarBase {
-  width: 100%;
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0.05); /* Fundo da barra bem escuro */
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progressBarFill {
-  height: 100%;
-  background-color: var(--brand-primary); /* PREENCHIMENTO NEON */
-  border-radius: 3px;
-  /* A barra brilha */
-  box-shadow: 0 0 10px rgba(167, 139, 255, 0.5); 
-}
-
-/* --- Estilização interna: Insights Gerais --- */
-.insightsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.insightMiniCard {
-  background-color: rgba(0, 0, 0, 0.2); /* Fundo interno mais escuro */
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 1rem;
+/* --- Lista de Provas --- */
+.cardList {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.emptyState {
+  background-color: var(--bg-surface);
+  border: 1px dashed var(--border-color);
+  border-radius: 14px;
+  padding: 3.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 0.75rem;
 }
 
-.insightIcon {
-  color: var(--brand-primary); /* Ícones Neon */
-  filter: drop-shadow(0 0 3px rgba(167, 139, 255, 0.4));
-  margin-top: 0.15rem;
+.emptyIcon {
+  color: var(--text-muted);
+  opacity: 0.4;
 }
 
-.insightData {
+.emptyState p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.listItem {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.2s;
+}
+
+.listItem:hover {
+  border-color: var(--brand-primary);
+  background-color: rgba(167, 139, 255, 0.01);
+}
+
+.itemDateBox {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 12px;
+  color: #ef4444;
+  flex-shrink: 0;
 }
 
-.insightValue {
+.dateDay {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dateMonth {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.itemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  overflow: hidden;
+}
+
+.itemTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.itemSubtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.itemAction {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.dateFull {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* --- Ações Rápidas --- */
+.actionsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.actionCard {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.actionCard:hover {
+  border-color: var(--brand-primary);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+.actionIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background-color: rgba(167, 139, 255, 0.08);
+  color: var(--brand-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.actionContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.actionCard h3 {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
 }
 
-.insightLabel {
-  font-size: 0.75rem;
+.actionCard p {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  margin-top: 0.25rem;
+}
+
+.actionArrow {
+  margin-left: auto;
+  color: var(--brand-primary);
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+
+.actionCard:hover .actionArrow {
+  opacity: 1;
+  transform: translateX(4px);
 }
