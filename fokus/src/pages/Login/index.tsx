@@ -29,9 +29,9 @@ export default function Login() {
           password: senha,
         })
         if (signInError) throw signInError
-        navigate('/')
+        navigate('/home')
       } else {
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email,
           password: senha,
           options: {
@@ -39,7 +39,50 @@ export default function Login() {
           }
         })
         if (signUpError) throw signUpError
-        navigate('/')
+
+        // --- INÍCIO DO ONBOARDING AUTOMÁTICO ---
+        // O trecho entra exatamente aqui: APÓS a conta ser criada com sucesso 
+        // e ANTES de redirecionar para a Home!
+        if (signUpData.user) {
+          const userId = signUpData.user.id;
+
+          // 1. Cria a matéria de exemplo de Medicina
+          const { data: materiaExemplo } = await supabase.from('materias').insert([
+            {
+              nome: 'Anatomia Humana (Exemplo)',
+              professor: 'Dr. Roberto Almeida',
+              modus_operandi: 'Foco em memorização ativa e identificação visual. Gerar flashcards curtos e diretos para origem, inserção, ação e inervação de músculos e ossos.',
+              user_id: userId
+            }
+          ]).select().single()
+
+          // 2. Insere os documentos fake amarrados à matéria
+          if (materiaExemplo) {
+            await supabase.from('documentos').insert([
+              {
+                user_id: userId,
+                materia_id: materiaExemplo.id,
+                tipo: 'resumos',
+                titulo: 'Mapa Mental: Sistema Cardiovascular',
+                arquivo_nome: 'mapa_cardiovascular.png',
+                arquivo_tamanho: '1.2 MB',
+                arquivo_caminho: 'fake/mapa_cardio.png'
+              },
+              {
+                user_id: userId,
+                materia_id: materiaExemplo.id,
+                tipo: 'materiais',
+                titulo: 'Atlas - Membros Superiores',
+                arquivo_nome: 'atlas_membros_superiores.pdf',
+                arquivo_tamanho: '8.5 MB',
+                arquivo_caminho: 'fake/atlas_ms.pdf'
+              }
+            ])
+          }
+        }
+        // --- FIM DO ONBOARDING ---
+
+        navigate('/home')
       }
     } catch (err: any) {
       if (err.message === 'Invalid login credentials') {

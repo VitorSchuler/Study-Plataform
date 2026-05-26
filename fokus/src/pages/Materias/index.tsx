@@ -1,54 +1,74 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Plus, User, Sparkles, X, BookOpen } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
 import styles from './Materias.module.css'
 
 interface Subject {
-  id: number
-  name: string
+  id: string
+  nome: string
   professor: string
-  studyMethod: string
+  modus_operandi: string
 }
 
 export default function Materias() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [subjects, setSubjects] = useState<Subject[]>([
-    {
-      id: 1,
-      name: 'Estrutura de Dados',
-      professor: 'Dr. Arthur Lenner',
-      studyMethod: 'Foco total em resoluções de problemas em C++ e análise assintótica. Prefiro resumos curtos seguidos de exercícios práticos.'
-    },
-    {
-      id: 2,
-      name: 'Programação Web',
-      professor: 'Demetrio Gomes Mestre',
-      studyMethod: 'Abordagem brutalista e moderna de CSS. Foco em componentização no React e boas práticas de arquitetura limpa.'
-    }
-  ])
+  const [subjects, setSubjects] = useState<Subject[]>([])
+  const [loading, setLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [name, setName] = useState('')
+  const [nome, setNome] = useState('')
   const [professor, setProfessor] = useState('')
-  const [studyMethod, setStudyMethod] = useState('')
+  const [modusOperandi, setModusOperandi] = useState('')
 
-  function handleCreateSubject(e: React.FormEvent) {
-    e.preventDefault()
-    if (!name.trim() || !studyMethod.trim()) return
+  // 1. Busca as matérias do usuário no Supabase
+  async function fetchSubjects() {
+    setLoading(true)
+    const { data, error } = await supabase
+      .from('materias')
+      .select('*')
+      .order('created_at', { ascending: false })
 
-    const newSubject: Subject = {
-      id: Date.now(),
-      name,
-      professor: professor.trim() ? professor : 'Não informado',
-      studyMethod
+    if (!error && data) {
+      setSubjects(data)
     }
+    setLoading(false)
+  }
 
-    setSubjects([...subjects, newSubject])
-    
-    // Limpar formulário e fechar modal
-    setName('')
-    setProfessor('')
-    setStudyMethod('')
-    setIsModalOpen(false)
+  useEffect(() => {
+    fetchSubjects()
+  }, [])
+
+  // 2. Salva a nova matéria no banco de dados
+  async function handleCreateSubject(e: React.FormEvent) {
+    e.preventDefault()
+    if (!nome.trim() || !modusOperandi.trim()) return
+
+    setIsSubmitting(true)
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (user) {
+      const { error } = await supabase.from('materias').insert([
+        {
+          nome,
+          professor: professor.trim() ? professor : 'Não informado',
+          modus_operandi: modusOperandi,
+          user_id: user.id
+        }
+      ])
+
+      if (!error) {
+        // Limpar formulário, fechar modal e atualizar lista
+        setNome('')
+        setProfessor('')
+        setModusOperandi('')
+        setIsModalOpen(false)
+        fetchSubjects()
+      } else {
+        alert('Erro ao salvar a matéria.')
+      }
+    }
+    setIsSubmitting(false)
   }
 
   return (
@@ -66,36 +86,41 @@ export default function Materias() {
 
       {/* Grid de Cards de Matérias */}
       <div className={styles.grid}>
-        {subjects.map(subject => (
-          <article key={subject.id} className={styles.card}>
-            <div className={styles.cardHeader}>
-              <BookOpen size={20} className={styles.subjectIcon} />
-              <h3 className={styles.subjectName}>{subject.name}</h3>
-            </div>
-            
-            <div className={styles.professorInfo}>
-              <User size={14} />
-              <span>{subject.professor}</span>
-            </div>
-
-            <div className={styles.methodPreview}>
-              <div className={styles.methodHeader}>
-                <Sparkles size={14} className={styles.sparkleIcon} />
-                <span>Diretriz da IA</span>
+        {loading ? (
+          <p style={{ color: 'var(--text-secondary)' }}>Carregando matérias...</p>
+        ) : subjects.length === 0 ? (
+          <p style={{ color: 'var(--text-secondary)' }}>Nenhuma matéria cadastrada. Adicione sua primeira!</p>
+        ) : (
+          subjects.map(subject => (
+            <article key={subject.id} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <BookOpen size={20} className={styles.subjectIcon} />
+                <h3 className={styles.subjectName}>{subject.nome}</h3>
               </div>
-              <p>{subject.studyMethod}</p>
-            </div>
+              
+              <div className={styles.professorInfo}>
+                <User size={14} />
+                <span>{subject.professor}</span>
+              </div>
 
-            {/* Substituído o <button> pelo <Link> do React Router */}
-            <Link 
-              to={`/materias/${subject.id}`} 
-              className={styles.enterBtn}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}
-            >
-              Acessar Disciplina
-            </Link>
-          </article>
-        ))}
+              <div className={styles.methodPreview}>
+                <div className={styles.methodHeader}>
+                  <Sparkles size={14} className={styles.sparkleIcon} />
+                  <span>Diretriz da IA</span>
+                </div>
+                <p>{subject.modus_operandi}</p>
+              </div>
+
+              <Link 
+                to={`/materias/${subject.id}`} 
+                className={styles.enterBtn}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}
+              >
+                Acessar Disciplina
+              </Link>
+            </article>
+          ))
+        )}
       </div>
 
       {/* Modal de Cadastro (Sobreposição) */}
@@ -115,10 +140,11 @@ export default function Materias() {
                 <input
                   type="text"
                   placeholder="Ex: Cálculo B, Redes de Computadores..."
-                  value={name}
-                  onChange={e => setName(e.target.value)}
+                  value={nome}
+                  onChange={e => setNome(e.target.value)}
                   className={styles.input}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -130,13 +156,12 @@ export default function Materias() {
                   value={professor}
                   onChange={e => setProfessor(e.target.value)}
                   className={styles.input}
+                  disabled={isSubmitting}
                 />
               </div>
 
               <div className={styles.field}>
                 <label className={styles.label}>Como você quer estudar essa matéria?</label>
-                
-                {/* Textinho explicativo sobre o Modus Operandi */}
                 <div className={styles.aiExplanation}>
                   <Sparkles size={16} className={styles.explanationIcon} />
                   <p>
@@ -148,21 +173,22 @@ export default function Materias() {
                 </div>
 
                 <textarea
-                  placeholder="Ex: Quero focar em memorização ativa. Peça para a IA gerar flashcards e focar na resolução de equações passo a passo, sem me dar a resposta direto..."
-                  value={studyMethod}
-                  onChange={e => setStudyMethod(e.target.value)}
+                  placeholder="Ex: Quero focar em memorização ativa. Peça para a IA gerar flashcards e focar na resolução de equações passo a passo..."
+                  value={modusOperandi}
+                  onChange={e => setModusOperandi(e.target.value)}
                   className={styles.textarea}
                   rows={5}
                   required
+                  disabled={isSubmitting}
                 />
               </div>
 
               <div className={styles.modalActions}>
-                <button type="button" className={styles.cancelBtn} onClick={() => setIsModalOpen(false)}>
+                <button type="button" className={styles.cancelBtn} onClick={() => setIsModalOpen(false)} disabled={isSubmitting}>
                   Cancelar
                 </button>
-                <button type="submit" className={styles.submitBtn}>
-                  Salvar Disciplina
+                <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
+                  {isSubmitting ? 'Salvando...' : 'Salvar Disciplina'}
                 </button>
               </div>
             </form>
