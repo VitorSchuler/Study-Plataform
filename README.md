@@ -5,6 +5,7 @@
 ### Um ambiente de estudo imersivo, focado em alta performance e guiado por Inteligência Artificial.
 
 Plataforma desenvolvida para estudantes que buscam concentração profunda, organização estratégica e suporte contextual por IA.
+
 <img width="130" height="130" alt="ChatGPT Image 25 de mai  de 2026, 15_54_22" src="https://github.com/user-attachments/assets/839a0247-4a47-40ab-9312-ffe20519ce2a" />
 
 
