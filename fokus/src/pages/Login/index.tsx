@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../lib/supabase'
 import styles from './Login.module.css'
 
 type Tab = 'entrar' | 'cadastro'
@@ -8,14 +10,59 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [nome, setNome] = useState('')
+  
+  // Estados do Supabase
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  
+  const navigate = useNavigate()
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    console.log({ tab, email, senha, nome })
+    setLoading(true)
+    setError(null)
+
+    try {
+      if (tab === 'entrar') {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password: senha,
+        })
+        if (signInError) throw signInError
+        navigate('/')
+      } else {
+        const { error: signUpError } = await supabase.auth.signUp({
+          email,
+          password: senha,
+          options: {
+            data: { full_name: nome }
+          }
+        })
+        if (signUpError) throw signUpError
+        navigate('/')
+      }
+    } catch (err: any) {
+      if (err.message === 'Invalid login credentials') {
+        setError('E-mail ou senha incorretos.')
+      } else if (err.message === 'User already registered') {
+        setError('Este e-mail já está cadastrado.')
+      } else if (err.message.includes('Password should be at least')) {
+        setError('A senha deve ter pelo menos 6 caracteres.')
+      } else {
+        setError(err.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function handleTabChange(newTab: Tab) {
+    setTab(newTab)
+    setError(null)
   }
 
   return (
-    <div className={styles.root}>
+    <div className={styles.container}>
       <div className={styles.cardWrapper}>
         
         {/* Lado Esquerdo: Identidade Visual e Foco */}
@@ -54,19 +101,27 @@ export default function Login() {
           <div className={styles.tabs}>
             <button
               className={`${styles.tab} ${tab === 'entrar' ? styles.tabActive : ''}`}
-              onClick={() => setTab('entrar')}
+              onClick={() => handleTabChange('entrar')}
+              disabled={loading}
             >
               Entrar
             </button>
             <button
               className={`${styles.tab} ${tab === 'cadastro' ? styles.tabActive : ''}`}
-              onClick={() => setTab('cadastro')}
+              onClick={() => handleTabChange('cadastro')}
+              disabled={loading}
             >
               Criar conta
             </button>
           </div>
 
           <form className={styles.form} onSubmit={handleSubmit}>
+            {error && (
+              <div className={styles.errorMessage}>
+                {error}
+              </div>
+            )}
+
             {tab === 'cadastro' && (
               <div className={styles.field}>
                 <label className={styles.label}>Nome completo</label>
@@ -77,6 +132,7 @@ export default function Login() {
                   value={nome}
                   onChange={e => setNome(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
             )}
@@ -90,6 +146,7 @@ export default function Login() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
+                disabled={loading}
               />
             </div>
 
@@ -102,6 +159,8 @@ export default function Login() {
                 value={senha}
                 onChange={e => setSenha(e.target.value)}
                 required
+                minLength={6}
+                disabled={loading}
               />
             </div>
 
@@ -111,8 +170,8 @@ export default function Login() {
               </div>
             )}
 
-            <button className={styles.btn} type="submit">
-              {tab === 'entrar' ? 'Entrar' : 'Criar conta'}
+            <button className={styles.btn} type="submit" disabled={loading || !email || !senha}>
+              {loading ? 'Aguarde...' : (tab === 'entrar' ? 'Entrar' : 'Criar conta')}
             </button>
           </form>
 
@@ -122,7 +181,7 @@ export default function Login() {
             <span className={styles.dividerLine} />
           </div>
 
-          <button className={styles.googleBtn}>
+          <button className={styles.googleBtn} disabled={loading} type="button">
             <GoogleIcon />
             Continuar com Google
           </button>

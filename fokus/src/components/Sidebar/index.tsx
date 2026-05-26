@@ -1,36 +1,58 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, BookOpen, FileText, ChevronLeft, ChevronRight, Sun, Moon } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { LayoutDashboard, BookOpen, FileText, ChevronLeft, ChevronRight, Sun, Moon, LogOut } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
 import styles from './Sidebar.module.css'
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  
+  // Estado para os dados dinâmicos do usuário
+  const [nomeUsuario, setNomeUsuario] = useState('Estudante')
   
   // 1. LAZY INITIALIZATION: Ao carregar, verifica o localStorage primeiro.
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    // Buscamos a chave '@fokus:theme'
     const storedTheme = localStorage.getItem('@fokus:theme')
-    
-    // Se existir algo salvo, usamos. Se não, o padrão é 'dark' (Neon).
     if (storedTheme === 'light' || storedTheme === 'dark') {
       return storedTheme
     }
     return 'dark'
   })
 
-  // 2. EFEITO DE SINCRONIZAÇÃO: Sempre que a variável 'theme' mudar:
+  // 2. EFEITO DE SINCRONIZAÇÃO DE TEMA
   useEffect(() => {
-    // Muda a cor na tela
     document.documentElement.setAttribute('data-theme', theme)
-    
-    // Salva a nova escolha no navegador
     localStorage.setItem('@fokus:theme', theme)
   }, [theme])
+
+  // 3. EFEITO PARA BUSCAR DADOS DO USUÁRIO NO SUPABASE
+  useEffect(() => {
+    async function buscarDadosUsuario() {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user && user.user_metadata?.full_name) {
+        setNomeUsuario(user.user_metadata.full_name)
+      } else if (user?.email) {
+        setNomeUsuario(user.email.split('@')[0])
+      }
+    }
+    buscarDadosUsuario()
+  }, [])
 
   function toggleTheme() {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    navigate('/login')
+  }
+
+  // Extrai o primeiro nome e a inicial
+  const primeiroNome = nomeUsuario.split(' ')[0]
+  const inicialAvatar = primeiroNome.charAt(0).toUpperCase()
 
   return (
     <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
@@ -74,8 +96,15 @@ export function Sidebar() {
       </div>
 
       <div className={styles.footer}>
-        <div className={styles.avatar}>V</div>
-        {!isCollapsed && <span className={styles.userName}>Vitor</span>}
+        <div className={styles.profileArea}>
+          <div className={styles.avatar}>{inicialAvatar}</div>
+          {!isCollapsed && <span className={styles.userName}>{primeiroNome}</span>}
+        </div>
+        
+        <button onClick={handleLogout} className={styles.logoutBtn} title="Sair do sistema">
+          <LogOut size={18} className={styles.icon} />
+          {!isCollapsed && <span>Sair</span>}
+        </button>
       </div>
     </aside>
   )

@@ -1,4 +1,4 @@
-.root {
+.container {
   display: flex;
   min-height: 100vh;
   align-items: center;
@@ -228,6 +228,13 @@
   box-shadow: 0 0 5px rgba(167, 139, 255, 0.5);
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+  box-shadow: none;
+}
+
 .divider {
   display: flex;
   align-items: center;
@@ -264,7 +271,25 @@
   transition: background-color 0.2s;
 }
 
-.googleBtn:hover {
+.googleBtn:hover:not(:disabled) {
   background-color: rgba(255, 255, 255, 0.06);
   border-color: var(--text-muted);
+}
+
+.googleBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Classe de Erro do Supabase --- */
+.errorMessage {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  text-align: center;
+  font-weight: 500;
 }
